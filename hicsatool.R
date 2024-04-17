@@ -3,13 +3,7 @@ library(shiny)
 library(DT)
 
 # Sample data for demonstration
-sample_data <- data.frame(
-  ID = 1:5,
-  Name = c("John", "Alice", "Bob", "Emma", "Michael"),
-  Age = c(25, 30, 35, 40, 45),
-  Gender = c("M", "F", "M", "F", "M"),
-  Score = c(80, 75, 90, 85, 88)
-)
+sample_data <- read.csv("data/hi-csa-es/data/tabula-NRCS-CSAF-Mitigation-Activities.csv")
 
 # Define UI for application
 ui <- fluidPage(
