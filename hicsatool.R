@@ -3,7 +3,8 @@ library(shiny)
 library(DT)
 
 # Sample data for demonstration
-sample_data <- read.csv("data/hi-csa-es/data/tabula-NRCS-CSAF-Mitigation-Activities.csv")
+load("data/hi-csa-es/data/nrc_tab.Rdata")
+sample_data <- nrc.tab
 
 # Define UI for application
 ui <- fluidPage(
