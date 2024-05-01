@@ -1,54 +1,70 @@
-# Load required libraries
+# Load required packages
 library(shiny)
 library(DT)
 
-# Sample data for demonstration
-load("data/hi-csa-es/data/nrc_tab.Rdata")
-sample_data <- nrc.tab
+sample_data <- readRDS("hi-csa-db.rds")
 
-# Define UI for application
+for (i in seq_along(sample_data[, "Resource"])){
+    x <- sample_data[i, "Resource"]
+    x <- paste0("<a href='", x, "'>", x, "</a>")
+    sample_data[i, "Resource"] <- x
+}
+
+sample_data <- sample_data[, c("Practice", "Mitigation", "Description", "Resource")]
+
+# Define UI for the Shiny app
 ui <- fluidPage(
-  
-  # Application title
-  titlePanel("Variable Selector Data Viewer"),
-  
-  # Sidebar layout with input and output definitions
+  titlePanel("Hawai‘i CSA Resource Hub"),
   sidebarLayout(
     sidebarPanel(
-      # Dropdown menu for selecting a variable
-      selectInput("dropdown_variable", "Select a Variable for Dropdown Menu:",
-                  choices = colnames(sample_data)),
-      
-      # Checkbox group for selecting another variable
-      checkboxGroupInput("checkbox_variable", "Select Variables for Checkbox Group:",
-                         choices = colnames(sample_data),
-                         selected = colnames(sample_data))
+      ## textInput("info_text", "Enter some text:", value = "Type here"),
+      ## checkboxInput("deselect_all", "Deselect All", value = FALSE),
+      # Create checkboxes based on unique "Practice" values
+      checkboxGroupInput(
+        "practice_choices",
+        "What practices are you interested in using?",
+        choices = unique(sample_data$Practice),
+        selected = unique(sample_data$Practice)
+      )
     ),
-    
-    # Output: Data table
     mainPanel(
-      DTOutput("table")
+      # Display the data table without row names
+      DTOutput("data_table")
     )
   )
 )
 
-# Define server logic
-server <- function(input, output) {
-  
-  # Reactive expression to subset data based on selected variables
-  selected_data <- reactive({
-    data <- sample_data
-    if (!is.null(input$dropdown_variable)) {
-      data <- data[, c(input$dropdown_variable, input$checkbox_variable), drop = FALSE]
+# Define server logic for the Shiny app
+server <- function(input, output, session) {
+  # Observer to handle "Deselect All" checkbox
+  observeEvent(input$deselect_all, {
+    if (input$deselect_all) {
+      # If "Deselect All" is checked, clear all checkboxes
+      updateCheckboxGroupInput(
+        session,
+        "practice_choices",
+        selected = NULL  # No checkboxes selected
+      )
+    } else {
+      # If "Deselect All" is unchecked, select all checkboxes
+      updateCheckboxGroupInput(
+        session,
+        "practice_choices",
+        selected = unique(sample_data$Practice)
+      )
     }
-    data
   })
-  
-  # Render data table
-  output$table <- renderDT({
-    datatable(selected_data())
+  # Reactively subset the data based on user-selected checkboxes
+  filtered_data <- reactive({
+    req(input$practice_choices)  # Ensure some choices are selected
+    subset(sample_data, Practice %in% input$practice_choices)
+  })
+
+  # Render the data table with clickable URLs and without row names
+  output$data_table <- renderDT({
+    datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 10))
   })
 }
 
-# Run the application
-shinyApp(ui = ui, server = server)
+# Run the Shiny app
+shinyApp(ui, server)

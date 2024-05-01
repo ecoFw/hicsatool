@@ -1,0 +1,3 @@
+[submodule "data/hi-csa-db"]
+	path = data/hi-csa-db
+	url = git@github.com:ecoFw/hi-csa-db.git
