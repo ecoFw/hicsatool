@@ -2,7 +2,7 @@
 library(shiny)
 library(DT)
 
-sample_data <- readRDS("hi-csa-db.rds")
+sample_data <- readRDS("data/hi-csa-db.rds")
 
 for (i in seq_along(sample_data[, "Resource"])){
     x <- sample_data[i, "Resource"]

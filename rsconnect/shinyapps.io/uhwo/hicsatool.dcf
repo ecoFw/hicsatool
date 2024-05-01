@@ -5,6 +5,6 @@ account: uhwo
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11813136
-bundleId:
+bundleId: 8562983
 url: https://uhwo.shinyapps.io/hicsatool/
 version: 1
