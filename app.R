@@ -25,7 +25,8 @@ ui <- fluidPage(
         "What practices are you interested in using?",
         choices = unique(sample_data$Practice),
         selected = unique(sample_data$Practice)
-      )
+      ),
+      actionButton("deselect", "Deselect All")
     ),
     mainPanel(
       # Display the data table without row names
@@ -37,29 +38,17 @@ ui <- fluidPage(
 # Define server logic for the Shiny app
 server <- function(input, output, session) {
   # Observer to handle "Deselect All" checkbox
-  observeEvent(input$deselect_all, {
-    if (input$deselect_all) {
-      # If "Deselect All" is checked, clear all checkboxes
-      updateCheckboxGroupInput(
-        session,
-        "practice_choices",
-        selected = NULL  # No checkboxes selected
-      )
-    } else {
-      # If "Deselect All" is unchecked, select all checkboxes
-      updateCheckboxGroupInput(
-        session,
-        "practice_choices",
-        selected = unique(sample_data$Practice)
-      )
-    }
+   observeEvent(input$deselect, {
+    updateCheckboxGroupInput(session, "practice_choices", selected = character(0))
   })
   # Reactively subset the data based on user-selected checkboxes
+  output$selected <- renderText({
+    paste("Selected options:", paste(input$checkboxes, collapse = ", "))
+  })
   filtered_data <- reactive({
     req(input$practice_choices)  # Ensure some choices are selected
     subset(sample_data, Practice %in% input$practice_choices)
   })
-
   # Render the data table with clickable URLs and without row names
   output$data_table <- renderDT({
     datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 10))
