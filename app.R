@@ -4,6 +4,7 @@ library(DT)
 
 sample_data <- readRDS("data/hi-csa-db.rds")
 
+
 for (i in seq_along(sample_data[, "Resource"])){
     x <- sample_data[i, "Resource"]
     x <- paste0("<a href='", x, "'>", x, "</a>")
@@ -26,7 +27,8 @@ ui <- fluidPage(
         choices = unique(sample_data$Practice),
         selected = unique(sample_data$Practice)
       ),
-      actionButton("deselect", "Deselect All")
+      actionButton("deselect", "Deselect All"),
+      p("Refresh the page to re-select all.")
     ),
     mainPanel(
       # Display the data table without row names
