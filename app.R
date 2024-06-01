@@ -28,7 +28,11 @@ ui <- fluidPage(
         selected = unique(sample_data$Practice)
       ),
       actionButton("deselect", "Deselect All"),
-      p("Refresh the webpage to re-select all.")
+      p("Refresh the webpage to re-select all."),
+      p(""),
+      sidebarPanel(
+      downloadButton("downloadData", "Download Selected Rows")
+    )
     ),
     mainPanel(
       # Display the data table without row names
@@ -53,8 +57,30 @@ server <- function(input, output, session) {
   })
   # Render the data table with clickable URLs and without row names
   output$data_table <- renderDT({
-    datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 10))
+      datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 50))
   })
+
+
+  ## Handle the CSV download
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste("selected-data-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+
+      if(length(selected_rows) == 0) {
+        showModal(modalDialog(
+          title = "No Rows Selected",
+          "Please select rows to download.",
+          easyClose = TRUE,
+          footer = NULL
+        ))
+        return()
+      }
+      write.csv(data[selected_rows, ], file)
+    }
+  )
+
 }
 
 # Run the Shiny app
