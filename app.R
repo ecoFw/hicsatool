@@ -1,9 +1,9 @@
 # Load required packages
 library(shiny)
 library(DT)
+library(stringr)
 
 sample_data <- readRDS("data/hi-csa-db.rds")
-
 
 for (i in seq_along(sample_data[, "Resource"])){
     x <- sample_data[i, "Resource"]
@@ -57,7 +57,7 @@ server <- function(input, output, session) {
   })
   # Render the data table with clickable URLs and without row names
   output$data_table <- renderDT({
-      datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 50))
+    datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 50))
   })
 
 
@@ -67,8 +67,12 @@ server <- function(input, output, session) {
       paste("selected-data-", Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-
-      if(length(selected_rows) == 0) {
+        out <- filtered_data()
+out <- sample_data[1:10,]
+        out[, "Resource"] <- sapply(out[, "Resource"], 
+               function(x) str_extract_all(x, "(?<=\\>).*?(?=\\<)")[[1]])
+        write.csv(out, file, row.names = FALSE)
+      if(length(subset(sample_data, Practice %in% input$practice_choices)) == 0) {
         showModal(modalDialog(
           title = "No Rows Selected",
           "Please select rows to download.",
@@ -77,7 +81,6 @@ server <- function(input, output, session) {
         ))
         return()
       }
-      write.csv(data[selected_rows, ], file)
     }
   )
 
