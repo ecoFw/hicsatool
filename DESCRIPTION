@@ -1,12 +1,21 @@
-Package: hicsatool
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+# Hawai‘i Climate Smart Agriculture Resource Tool
+
+Agriculture is a top contributor to climate change. This web-tool
+provides a minimalist interface to a wide number of Climate Smart
+Agriculture (CSA) resources of relevance to producers and food system
+change activators.
+
+## Support
+
+This tool is an interface to a database of climate smart tools. Details of the project pipeline can be found here: [hi-csa-db](https://github.com/ecoFw/hi-csa-db/ "hi-csa-db"). Please submit feature requests and bugs to the [issues](https://github.com/ecoFw/hicsatool/issues "issues") system.
+
+## Attribution
+
+This project is supported by a grant from the City and County of
+Honolulu. Development is made possible by the following team of collaborators:
+
+- Dr. Matthew Kekoa Lau, UH West O‘ahu (lead)
+- Lucas McKinnon, Hawai‘i Good Food Alliance 
+- Jackson Hart, Pacific Gateway Center
+- Jason Shawn, Honolulu City and County
+- Amanda Shaw, O‘ahu Agriculture and Conservation Association
