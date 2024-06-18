@@ -68,7 +68,6 @@ server <- function(input, output, session) {
     },
     content = function(file) {
         out <- filtered_data()
-out <- sample_data[1:10,]
         out[, "Resource"] <- sapply(out[, "Resource"], 
                function(x) str_extract_all(x, "(?<=\\>).*?(?=\\<)")[[1]])
         write.csv(out, file, row.names = FALSE)
@@ -83,7 +82,7 @@ out <- sample_data[1:10,]
       }
     }
   )
-
+    
 }
 
 # Run the Shiny app
