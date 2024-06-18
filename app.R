@@ -23,16 +23,18 @@ ui <- fluidPage(
       # Create checkboxes based on unique "Practice" values
       checkboxGroupInput(
         "practice_choices",
-        "What practices are you interested in using?",
+        "What Climate Smart Agricultural (CSA) practices are you interested?",
         choices = unique(sample_data$Practice),
         selected = unique(sample_data$Practice)
       ),
       actionButton("deselect", "Deselect All"),
       p("Refresh the webpage to re-select all."),
       p(""),
-      sidebarPanel(
-      downloadButton("downloadData", "Download Selected Rows")
-    )
+      downloadButton("downloadData", "Download Selected Rows"),
+      p(""),
+      p("This project is supported by the Honolulu City and County Office of Climate Change, Sustainability and Resilience."),
+      tags$a(href = "https://ecofw.github.io", 
+             "More info here", target = "_blank")
     ),
     mainPanel(
       # Display the data table without row names
