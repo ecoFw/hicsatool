@@ -15,26 +15,30 @@ sample_data <- sample_data[, c("Practice", "Mitigation", "Description", "Resourc
 
 # Define UI for the Shiny app
 ui <- fluidPage(
-  titlePanel("Hawai‘i CSA Resource Hub"),
+  titlePanel("Hawai‘i CSA Resource Webtool"),
   sidebarLayout(
     sidebarPanel(
-      ## textInput("info_text", "Enter some text:", value = "Type here"),
-      ## checkboxInput("deselect_all", "Deselect All", value = FALSE),
       # Create checkboxes based on unique "Practice" values
       checkboxGroupInput(
         "practice_choices",
-        "What Climate Smart Agricultural (CSA) practices are you interested?",
+        "What CSA practices interest you?",
         choices = unique(sample_data$Practice),
         selected = unique(sample_data$Practice)
       ),
       actionButton("deselect", "Deselect All"),
-      p("Refresh the webpage to re-select all."),
+      actionButton("selectall", "Select All"),
       p(""),
       downloadButton("downloadData", "Download Selected Rows"),
       p(""),
-      p("This project is supported by the Honolulu City and County Office of Climate Change, Sustainability and Resilience."),
-      tags$a(href = "https://ecofw.github.io", 
-             "More info here", target = "_blank")
+      p("This project is supported by:"),
+     tags$a(href = "https://www.resilientoahu.org/", 
+             "Honolulu City and County Office of Climate Change, Sustainability and Resilience", target = "_blank"),
+     a("and"),
+     tags$a(href = "https://www.oahuaca.org/", 
+             "OACA", target = "_blank"),
+      p(""),
+     tags$a(href = "https://ecofw.github.io", 
+             strong("Home"), target = "_blank")
     ),
     mainPanel(
       # Display the data table without row names
@@ -45,9 +49,15 @@ ui <- fluidPage(
 
 # Define server logic for the Shiny app
 server <- function(input, output, session) {
-  # Observer to handle "Deselect All" checkbox
+  # Observer to handle "Deselect All" button
    observeEvent(input$deselect, {
-    updateCheckboxGroupInput(session, "practice_choices", selected = character(0))
+    updateCheckboxGroupInput(session, "practice_choices", 
+                             selected = character(0))
+  })
+  # Observer to handle "Select All" button
+   observeEvent(input$selectall, {
+    updateCheckboxGroupInput(session, "practice_choices", 
+                             selected = unique(sample_data$Practice))
   })
   # Reactively subset the data based on user-selected checkboxes
   output$selected <- renderText({
@@ -59,7 +69,7 @@ server <- function(input, output, session) {
   })
   # Render the data table with clickable URLs and without row names
   output$data_table <- renderDT({
-    datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 50))
+    datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 10))
   })
 
 
