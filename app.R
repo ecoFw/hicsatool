@@ -69,7 +69,8 @@ server <- function(input, output, session) {
   })
   # Render the data table with clickable URLs and without row names
   output$data_table <- renderDT({
-    datatable(filtered_data(), rownames = FALSE, escape = FALSE, options = list(pageLength = 10))
+    datatable(filtered_data(), rownames = FALSE, escape = FALSE, 
+              options = list(pageLength = 10, searching = FALSE))
   })
 
 
