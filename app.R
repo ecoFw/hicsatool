@@ -32,7 +32,7 @@ ui <- fluidPage(
       p(""),
       p("This project is supported by:"),
      tags$a(href = "https://www.resilientoahu.org/", 
-             "Honolulu City and County Office of Climate Change, Sustainability and Resilience", target = "_blank"),
+             "Honolulu City and County Office of Climate Change, Sustainability and Resiliency", target = "_blank"),
      a("and"),
      tags$a(href = "https://www.oahuaca.org/", 
              "OACA", target = "_blank"),
