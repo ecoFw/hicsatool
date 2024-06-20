@@ -30,15 +30,8 @@ ui <- fluidPage(
       p(""),
       downloadButton("downloadData", "Download Selected Rows"),
       p(""),
-      p("This project is supported by:"),
-     tags$a(href = "https://www.resilientoahu.org/", 
-             "Honolulu City and County Office of Climate Change, Sustainability and Resiliency", target = "_blank"),
-     a("and"),
-     tags$a(href = "https://www.oahuaca.org/", 
-             "OACA", target = "_blank"),
-      p(""),
      tags$a(href = "https://ecofw.github.io", 
-             strong("Home"), target = "_blank")
+            ("About the webtool"), target = "_blank")
     ),
     mainPanel(
       # Display the data table without row names
