@@ -12,6 +12,7 @@ for (i in seq_along(sample_data[, "Resource"])){
 }
 
 sample_data <- sample_data[, c("Practice", "Mitigation", "Description", "Resource")]
+sample_data <- sample_data[!(grepl("Additional", sample_data[, "Mitigation"])), ]
 
 # Define UI for the Shiny app
 ui <- fluidPage(
