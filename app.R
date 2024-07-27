@@ -24,8 +24,8 @@ ui <- fluidPage(
       checkboxGroupInput(
         "practice_choices",
         "What CSA practices interest you?",
-        choices = unique(sample_data$Practice),
-        selected = unique(sample_data$Practice)
+        choices = sort(unique(sample_data$Practice)),
+        selected = sort(unique(sample_data$Practice))
       ),
       actionButton("deselect", "Deselect All"),
       actionButton("selectall", "Select All"),
